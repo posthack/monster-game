@@ -1,12 +1,6 @@
 <template>
   <div class="game-buttons">
-    <button
-      :disabled="isLoading"
-      @click.prevent="handleAttack"
-      class="button _attack"
-    >
-      Attack
-    </button>
+    <button @click.prevent="handleAttack" class="button _attack">Attack</button>
     <button @click.prevent="handleSpecialAttack" class="button _special-attack">
       Special Attack
     </button>
@@ -88,7 +82,6 @@ export default {
     ...mapGetters({
       playerHealth: "getPlayerHealth",
       monsterHealth: "getMonsterHealth",
-      isLoading: "getIsLoading",
     }),
   },
 };

@@ -3,6 +3,15 @@ import { createStore } from "vuex";
 const apiUrl =
   "https://monster-game-7912b-default-rtdb.europe-west1.firebasedatabase.app/api.json";
 
+const updateLocalstorage = (stats) => {
+  localStorage.setItem("stats", JSON.stringify(stats));
+};
+
+const getLocalstorage = () => {
+  const stats = localStorage.getItem("stats");
+  return stats ? JSON.parse(stats) : null;
+};
+
 export const store = createStore({
   state: {
     monsterStats: {
@@ -15,7 +24,6 @@ export const store = createStore({
       health: 100,
       damageMultiplier: 1,
     },
-    isLoading: false,
     winner: "",
     combatLog: [],
   },
@@ -26,38 +34,39 @@ export const store = createStore({
     setMonsterHealth(state, payload) {
       state.monsterStats.health = payload;
     },
-    setIsLoading(state, payload) {
-      state.isLoading = payload;
-    },
     setWinner(state, payload) {
       state.winner = payload;
     },
     addCombatLog(state, payload) {
       state.combatLog.unshift(payload);
     },
+    setCombatLog(state, payload) {
+      state.combatLog = payload;
+    },
     resetCombatLog(state) {
       state.combatLog = [];
     },
   },
   actions: {
-    async initGame({ commit }) {
-      const { winner } = await (await fetch(apiUrl)).json();
-      commit("setWinner", winner);
-      const { player, monster } = await (await fetch(apiUrl)).json();
-      commit("setPlayerHealth", player);
-      commit("setMonsterHealth", monster);
-      commit("resetCombatLog");
+    initGame({ commit }) {
+      if (getLocalstorage()) {
+        commit("setPlayerHealth", getLocalstorage().player);
+        commit("setMonsterHealth", getLocalstorage().monster);
+        commit("setWinner", getLocalstorage().winner);
+        commit("setCombatLog", getLocalstorage().combatLog);
+      }
     },
-    async restartGame({ commit, dispatch, state }) {
+    restartGame({ commit, state }) {
       commit("setWinner", "");
       commit("setPlayerHealth", 100);
       commit("setMonsterHealth", 100);
       commit("resetCombatLog");
-      // dispatch("pushStats", {
-      //   player: state.playerStats.health,
-      //   monster: state.monsterStats.health,
-      //   winner: state.winner,
-      // });
+      updateLocalstorage({
+        player: state.playerStats.health,
+        monster: state.monsterStats.health,
+        winner: state.winner,
+        combatLog: state.combatLog,
+      });
     },
     pushStats({ commit, state }, payload) {
       if (payload.player) {
@@ -76,21 +85,12 @@ export const store = createStore({
           commit("setMonsterHealth", 0);
         }
       }
-      // commit("setIsLoading", true);
-      // const options = {
-      //   method: "PATCH",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     player: state.playerStats.health,
-      //     monster: state.monsterStats.health,
-      //     winner: state.winner,
-      //   }),
-      // };
-      // fetch(apiUrl, options).then((res) => {
-      //   if (res.ok) {
-      //     commit("setIsLoading", false);
-      //   }
-      // });
+      updateLocalstorage({
+        player: state.playerStats.health,
+        monster: state.monsterStats.health,
+        winner: state.winner,
+        combatLog: state.combatLog,
+      });
     },
     addCombatLog({ commit }, payload) {
       commit("addCombatLog", payload);
@@ -101,7 +101,6 @@ export const store = createStore({
     getMonsterStats: (state) => state.monsterStats,
     getPlayerHealth: (state) => state.playerStats.health,
     getMonsterHealth: (state) => state.monsterStats.health,
-    getIsLoading: (state) => state.isLoading,
     getWinner: (state) => state.winner,
     getCombatLog: (state) => state.combatLog,
   },
