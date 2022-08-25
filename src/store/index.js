@@ -1,8 +1,5 @@
 import { createStore } from "vuex";
 
-const apiUrl =
-  "https://monster-game-7912b-default-rtdb.europe-west1.firebasedatabase.app/api.json";
-
 const updateLocalstorage = (stats) => {
   localStorage.setItem("stats", JSON.stringify(stats));
 };
