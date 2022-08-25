@@ -1,7 +1,14 @@
-# Vue 3 + Vite
+# Monster mini-game
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<a href="https://imatteru-game.surge.sh" target="_blank"><img src="https://i.im.ge/2022/08/25/Ojjmsh.Screenshot-2022-08-25-at-17-45-42.png" /></a>
 
-## Recommended IDE Setup
+## [Live demo](https://imatteru-game.surge.sh)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+<br><br>
+
+### Development:
+
+```
+yarn
+yarn dev
+```
