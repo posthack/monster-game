@@ -1,12 +1,18 @@
 <template>
   <div class="game-buttons">
-    <button @click.prevent="handleAttack" class="button _attack">Attack</button>
+    <button
+      :disabled="isLoading"
+      @click.prevent="handleAttack"
+      class="button _attack"
+    >
+      Attack
+    </button>
     <button @click.prevent="handleSpecialAttack" class="button _special-attack">
       Special Attack
     </button>
     <button @click.prevent="handleHeal" class="button _heal">Heal</button>
-    <button @click.prevent="handleSurrender" class="button _surrender">
-      Surrender
+    <button @click.prevent="restartGame" class="button _restart">
+      Restart
     </button>
   </div>
 </template>
@@ -18,33 +24,34 @@ export default {
   name: "GameButtons",
   methods: {
     ...mapActions({
-      setHealth: "setHealth",
+      pushStats: "pushStats",
+      restartGame: "restartGame",
     }),
     monsterAttack() {
       let monsterDamage = Math.floor(Math.random() * 10) + 1;
       console.log("monster attack -> ", monsterDamage);
-      this.setHealth({
+      this.pushStats({
         player: this.playerHealth - monsterDamage,
       });
     },
     playerAttack() {
       let playerDamage = Math.floor(Math.random() * 10) + 1;
       console.log("player attack -> ", playerDamage);
-      this.setHealth({
+      this.pushStats({
         monster: this.monsterHealth - playerDamage,
       });
     },
     playerSpecialAttack() {
       let playerDamage = Math.floor(Math.random() * 10) + 5;
       console.log("player SPECIAL attack -> ", playerDamage);
-      this.setHealth({
+      this.pushStats({
         monster: this.monsterHealth - playerDamage,
       });
     },
     playerHeal() {
       let playerHeal = Math.floor(Math.random() * 20) + 1;
       console.log("player heal -> ", playerHeal);
-      this.setHealth({
+      this.pushStats({
         player:
           this.playerHealth + playerHeal < 100
             ? this.playerHealth + playerHeal
@@ -63,17 +70,12 @@ export default {
       this.playerHeal();
       this.monsterAttack();
     },
-    handleSurrender() {
-      this.setHealth({
-        player: 100,
-        monster: 100,
-      });
-    },
   },
   computed: {
     ...mapGetters({
       playerHealth: "getPlayerHealth",
       monsterHealth: "getMonsterHealth",
+      isLoading: "getIsLoading",
     }),
   },
 };
@@ -106,7 +108,7 @@ export default {
   &._heal {
     background-color: #00cc00;
   }
-  &._surrender {
+  &._restart {
     background-color: #fdca40;
   }
 }
