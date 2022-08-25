@@ -102,6 +102,7 @@ export default {
   border-radius: 6px;
   cursor: pointer;
   transition: all 150ms ease-in-out;
+  color: #000;
   &:hover {
     transform: scale(1.02) rotate(1deg);
   }
