@@ -35,6 +35,9 @@ export const store = createStore({
     addCombatLog(state, payload) {
       state.combatLog.unshift(payload);
     },
+    resetCombatLog(state) {
+      state.combatLog = [];
+    },
   },
   actions: {
     async initGame({ commit }) {
@@ -43,11 +46,13 @@ export const store = createStore({
       const { player, monster } = await (await fetch(apiUrl)).json();
       commit("setPlayerHealth", player);
       commit("setMonsterHealth", monster);
+      commit("resetCombatLog");
     },
     async restartGame({ commit, dispatch, state }) {
       commit("setWinner", "");
       commit("setPlayerHealth", 100);
       commit("setMonsterHealth", 100);
+      commit("resetCombatLog");
       // dispatch("pushStats", {
       //   player: state.playerStats.health,
       //   monster: state.monsterStats.health,

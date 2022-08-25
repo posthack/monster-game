@@ -26,31 +26,44 @@ export default {
     ...mapActions({
       pushStats: "pushStats",
       restartGame: "restartGame",
+      addCombatLog: "addCombatLog",
     }),
     monsterAttack() {
-      let monsterDamage = Math.floor(Math.random() * 10) + 1;
-      console.log("monster attack -> ", monsterDamage);
+      const monsterDamage = Math.floor(Math.random() * 10) + 1;
+      const logMessage = `Monster hits player for <span class="_damage">${monsterDamage} damage</span> (${
+        this.playerHealth
+      } -> ${this.playerHealth - monsterDamage})`;
+      this.addCombatLog(logMessage);
       this.pushStats({
         player: this.playerHealth - monsterDamage,
       });
     },
     playerAttack() {
-      let playerDamage = Math.floor(Math.random() * 10) + 1;
-      console.log("player attack -> ", playerDamage);
+      const playerDamage = Math.floor(Math.random() * 10) + 1;
+      const logMessage = `Player hits monster for <span class="_damage">${playerDamage} damage</span> (${
+        this.monsterHealth
+      } -> ${this.monsterHealth - playerDamage})`;
+      this.addCombatLog(logMessage);
       this.pushStats({
         monster: this.monsterHealth - playerDamage,
       });
     },
     playerSpecialAttack() {
-      let playerDamage = Math.floor(Math.random() * 10) + 5;
-      console.log("player SPECIAL attack -> ", playerDamage);
+      const playerDamage = Math.floor(Math.random() * 10) + 5;
+      const logMessage = `Player hits monster for <span class="_damage">${playerDamage} damage with SPECIAL attack</span> (${
+        this.monsterHealth
+      } -> ${this.monsterHealth - playerDamage})`;
+      this.addCombatLog(logMessage);
       this.pushStats({
         monster: this.monsterHealth - playerDamage,
       });
     },
     playerHeal() {
-      let playerHeal = Math.floor(Math.random() * 20) + 1;
-      console.log("player heal -> ", playerHeal);
+      const playerHeal = Math.floor(Math.random() * 20) + 1;
+      const logMessage = `Player heals for <span class="_heal">${playerHeal} health</span> (${
+        this.playerHealth
+      } -> ${this.playerHealth + playerHeal})`;
+      this.addCombatLog(logMessage);
       this.pushStats({
         player:
           this.playerHealth + playerHeal < 100

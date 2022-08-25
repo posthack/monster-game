@@ -50,8 +50,22 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .app {
   padding: 20px;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(#df2935, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 </style>
