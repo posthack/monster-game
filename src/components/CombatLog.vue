@@ -1,5 +1,5 @@
 <template>
-  <div class="combat-log">
+  <div v-if="combatLog.length" class="combat-log">
     <div class="combat-log__title">Combat log:</div>
     <div class="combat-log__list">
       <div
